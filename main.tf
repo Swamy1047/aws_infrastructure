@@ -144,8 +144,13 @@ resource "aws_instance" "server" {
     instance_type = var.instance_type
     subnet_id = aws_subnet.public1.id
     vpc_security_group_ids = [ aws_security_group.my-sg.id ]
+    user_data = templatefile("./install_jenkins.sh", {})
     key_name = "mns"
-    count = 2
+    count = 1
+
+    root_block_device {
+      volume_size = 30
+    }
 
     tags = {
       Name = "Web-server"
